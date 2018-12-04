@@ -1,8 +1,6 @@
 package geo
 
-import (
-	"math"
-)
+import "math"
 
 // Pt is a representation of a 2D point. float32 is used to save 50% of the
 // space - as this can add up with large polygons.

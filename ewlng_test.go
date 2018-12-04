@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	assert "github.com/stretchr/testify/assert"
-	// location "github.com/weathersource/protorepo/go/location"
 )
 
 func TestEwLng(t *testing.T) {

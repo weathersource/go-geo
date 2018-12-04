@@ -3,7 +3,7 @@ package geo
 import (
 	"math"
 
-	mathext "github.com/weathersource/pkg/mathext"
+	mathext "github.com/weathersource/go-mathext"
 )
 
 // Distance calculates distance in miles between two lat/lng values.
