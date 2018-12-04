@@ -1,2 +1,2 @@
-// The geo package provides functions of geographic functionality.
+// Package geo provides functions of geographic functionality.
 package geo

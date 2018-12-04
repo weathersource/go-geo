@@ -6,7 +6,7 @@ import (
 	mathext "github.com/weathersource/pkg/mathext"
 )
 
-// GeoDistance calculates distance in miles between two lat/lng values.
+// Distance calculates distance in miles between two lat/lng values.
 func Distance(lat1, lng1, lat2, lng2 float64) float64 {
 
 	// Haversine Formula Optomized: https://stackoverflow.com/questions/27928#21623206
