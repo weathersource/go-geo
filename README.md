@@ -6,5 +6,5 @@ pkg/geo
 [![Build Status](https://travis-ci.org/weathersource/go-geo.svg)](https://travis-ci.org/weathersource/go-geo)
 [![Codevov](https://codecov.io/gh/weathersource/go-geo/branch/master/graphs/badge.svg)](https://codecov.io/gh/weathersource/go-geo)
 
-The geo package provides functions of geographic functionality.
+Package geo provides functions of geographic functionality.
 
