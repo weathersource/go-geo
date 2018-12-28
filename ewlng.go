@@ -10,3 +10,14 @@ func EwLng(lng float64) float64 {
 	}
 	return lng
 }
+
+// EwLng converts lng to a east/west longitude value [-180, 180)
+func EwLng32(lng float32) float32 {
+	for 180 <= lng {
+		lng -= 360
+	}
+	for lng < -180 {
+		lng += 360
+	}
+	return lng
+}

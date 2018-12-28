@@ -10,3 +10,14 @@ func ELng(lng float64) float64 {
 	}
 	return lng
 }
+
+// ELng converts lng to a full east longitude value [0, 360)
+func ELng32(lng float32) float32 {
+	for 360 <= lng {
+		lng -= 360
+	}
+	for lng < 0 {
+		lng += 360
+	}
+	return lng
+}
