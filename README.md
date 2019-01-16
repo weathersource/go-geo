@@ -1,5 +1,5 @@
-pkg/geo
-=======
+go-geo
+======
 
 [![GoDoc](https://godoc.org/github.com/weathersource/go-geo?status.svg)](https://godoc.org/github.com/weathersource/go-geo)
 [![Go Report Card](https://goreportcard.com/badge/github.com/weathersource/go-geo)](https://goreportcard.com/report/github.com/weathersource/go-geo)
