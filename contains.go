@@ -1,11 +1,17 @@
 package geo
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 // Pt is a representation of a 2D point. float32 is used to save 50% of the
 // space - as this can add up with large polygons.
 type Pt struct {
 	Lat, Lng float32
+}
+type Pt64 struct {
+	Lat, Lng float64
 }
 
 // Poly is a polygon represented by series of points. The lines of a polygon
@@ -24,6 +30,8 @@ func (p Poly) Contains(point Pt) bool {
 	end := 0
 
 	contains := false
+	fmt.Println()
+	fmt.Println(contains, point.Lng)
 
 	// If the first point does not match the last point, the polygon contains at
 	// least one hole. If there are no holes, we can use simpler and faster logic.
@@ -31,6 +39,7 @@ func (p Poly) Contains(point Pt) bool {
 		for i := 1; i < len(p.Pts); i++ {
 			if p.intersectsWithRaycast(point, p.Pts[i-1], p.Pts[i]) {
 				contains = !contains
+				fmt.Println(contains, p.Pts[i-1].Lng, p.Pts[i].Lng)
 			}
 		}
 	} else {
@@ -68,8 +77,62 @@ func (p Poly) intersectsWithRaycast(point Pt, start Pt, end Pt) bool {
 	}
 
 	// Avoid the edge case where a ray intersects with a vertex.
-	for point.Lng == start.Lng || point.Lng == end.Lng {
+	if point.Lng == start.Lng || point.Lng == end.Lng {
+
 		newLng := math.Nextafter32(point.Lng, float32(math.Inf(1)))
+
+		// If we collide with the other vertex, we need to increase precision to
+		// get intermediate point on the line segment.
+		// HACK: clone the rest of the logic with float64 instead of float32
+		if newLng == start.Lng || newLng == end.Lng {
+			// convert sources to float64 points
+			point64 := Pt64{float64(point.Lat), float64(point.Lng)}
+			start64 := Pt64{float64(start.Lat), float64(start.Lng)}
+			end64 := Pt64{float64(end.Lat), float64(end.Lng)}
+
+			newLng64 := math.Nextafter(point64.Lng, math.Inf(1))
+			point64 = Pt64{point64.Lat, newLng64}
+
+			// If the point64 is north or south of both start64 and end64, it
+			// does not intersect.
+			if point64.Lng < start64.Lng || end64.Lng < point64.Lng {
+				return false
+			}
+
+			// If the point64 is east of both start64 and end64, it does not
+			// intersect. If the point64 is west of both start64 and end64, it
+			// does intersect.
+			if start64.Lat < end64.Lat {
+				if end64.Lat < point64.Lat {
+					return false
+				}
+				if point64.Lat < start64.Lat {
+					return true
+				}
+			} else if end64.Lat < start64.Lat {
+				if start64.Lat < point64.Lat {
+					return false
+				}
+				if point64.Lat < end64.Lat {
+					return true
+				}
+			} else { // start64.Lat == end64.Lat
+				if start64.Lat < point64.Lat {
+					return false
+				}
+				if point64.Lat <= start64.Lat {
+					return true
+				}
+			}
+
+			// if we get here, the point64 is within the box formed by the Lat
+			// and Lng values of start64 and end64. If the slope formed by
+			// start64 and end64 is
+			ptSlope := (point64.Lng - start64.Lng) / (point64.Lat - start64.Lat)
+			segSlope := (end64.Lng - start64.Lng) / (end64.Lat - start64.Lat)
+
+			return segSlope <= ptSlope
+		}
 		point = Pt{point.Lat, newLng}
 	}
 
@@ -110,4 +173,5 @@ func (p Poly) intersectsWithRaycast(point Pt, start Pt, end Pt) bool {
 	segSlope := (end.Lng - start.Lng) / (end.Lat - start.Lat)
 
 	return segSlope <= ptSlope
+
 }
