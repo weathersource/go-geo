@@ -1,7 +1,6 @@
 package geo
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -30,8 +29,6 @@ func (p Poly) Contains(point Pt) bool {
 	end := 0
 
 	contains := false
-	fmt.Println()
-	fmt.Println(contains, point.Lng)
 
 	// If the first point does not match the last point, the polygon contains at
 	// least one hole. If there are no holes, we can use simpler and faster logic.
@@ -39,7 +36,6 @@ func (p Poly) Contains(point Pt) bool {
 		for i := 1; i < len(p.Pts); i++ {
 			if p.intersectsWithRaycast(point, p.Pts[i-1], p.Pts[i]) {
 				contains = !contains
-				fmt.Println(contains, p.Pts[i-1].Lng, p.Pts[i].Lng)
 			}
 		}
 	} else {
