@@ -1,10 +1,10 @@
 module github.com/weathersource/go-geo
 
-go 1.21
+go 1.25
 
 require (
 	github.com/stretchr/testify v1.10.0
-	github.com/weathersource/go-mathext v1.0.9
+	github.com/weathersource/go-mathext v1.0.11
 )
 
 require (
